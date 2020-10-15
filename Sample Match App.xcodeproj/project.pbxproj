@@ -15,6 +15,7 @@
 		0625520F2537BC60004C08E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0625520D2537BC60004C08E5 /* LaunchScreen.storyboard */; };
 		06A93C842538ADA000C66118 /* Karla-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 062552102537BC60004C08E5 /* Karla-Regular.ttf */; };
 		06A93C872538AF1B00C66118 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A93C862538AF1B00C66118 /* Utilities.swift */; };
+		9E81BF8E322F0B18B4827795 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E81B7A955A8895C09D2DC0C /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		0625520E2537BC60004C08E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		062552102537BC60004C08E5 /* Karla-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Regular.ttf"; path = "Resources/Karla-Regular.ttf"; sourceTree = "<group>"; };
 		06A93C862538AF1B00C66118 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		9E81B7A955A8895C09D2DC0C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				0625520B2537BC60004C08E5 /* Assets.xcassets */,
 				0625520D2537BC60004C08E5 /* LaunchScreen.storyboard */,
 				062552102537BC60004C08E5 /* Karla-Regular.ttf */,
+				9E81B7A955A8895C09D2DC0C /* MainViewController.swift */,
 			);
 			path = "Sample Match App";
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 				062552032537BC5F004C08E5 /* AppDelegate.swift in Sources */,
 				06A93C872538AF1B00C66118 /* Utilities.swift in Sources */,
 				062552052537BC5F004C08E5 /* SceneDelegate.swift in Sources */,
+				9E81BF8E322F0B18B4827795 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
