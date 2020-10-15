@@ -49,7 +49,6 @@ class MainViewController: UIViewController {
 
         configure(viewModel.formatter)
         addSubviews()
-        viewModel.beginTimer()
     }
 
     private func configure(_ formatter: DateComponentsFormatter) {

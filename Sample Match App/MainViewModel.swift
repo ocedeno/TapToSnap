@@ -16,26 +16,45 @@ final class MainViewModel {
     let startTime: Date = Date()
     let duration: TimeInterval = 1441 * 60
     let formatter = DateComponentsFormatter()
+    let service: MainService = MainService()
 
-    struct Tile {
+    struct Tile: Codable {
+        var id: Int
         var state: State = .default
         var title: String = ""
         var image: UIImage? = nil
 
-        enum State {
+        enum State: String {
             case `default`
             case incorrect
             case success
             case verify
         }
+
+        enum CodingKeys: String, CodingKey {
+            case id = "id"
+            case title = "name"
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(id, forKey: .id)
+            try container.encode(title, forKey: .title)
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            try id = container.decode(Int.self, forKey: .id)
+            try title = container.decode(String.self, forKey: .title)
+        }
     }
-
-
 
     var state: State
 
     init(initialState: State) {
         state =  initialState
+        beginTimer()
+        service.fetchTileObjects()
     }
 
     func beginTimer() {
