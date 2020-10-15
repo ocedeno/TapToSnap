@@ -6,11 +6,11 @@ class StartupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupInitialStyle(for: continueButton)
+        setupInitialStyle(for: &continueButton)
         continueButton.addTarget(self, action: #selector(presentMainViewController), for: .touchUpInside)
     }
 
-    private func setupInitialStyle(for button: UIButton) {
+    private func setupInitialStyle(for button: inout UIButton) {
         button.setTitle("LET'S GO!", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .providedKarlaMediumFont
@@ -20,7 +20,7 @@ class StartupViewController: UIViewController {
 
     @objc private func presentMainViewController() {
         let viewController = MainViewController()
-        viewController.view.backgroundColor = .red
+        viewController.view.backgroundColor = .providedBgGray
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true)
     }

@@ -63,13 +63,13 @@
 			children = (
 				062552022537BC5F004C08E5 /* AppDelegate.swift */,
 				062552042537BC5F004C08E5 /* SceneDelegate.swift */,
+				9E81B7A955A8895C09D2DC0C /* MainViewController.swift */,
 				062552062537BC5F004C08E5 /* StartupViewController.swift */,
 				06A93C862538AF1B00C66118 /* Utilities.swift */,
 				062552082537BC5F004C08E5 /* Main.storyboard */,
 				0625520B2537BC60004C08E5 /* Assets.xcassets */,
 				0625520D2537BC60004C08E5 /* LaunchScreen.storyboard */,
 				062552102537BC60004C08E5 /* Karla-Regular.ttf */,
-				9E81B7A955A8895C09D2DC0C /* MainViewController.swift */,
 			);
 			path = "Sample Match App";
 			sourceTree = "<group>";

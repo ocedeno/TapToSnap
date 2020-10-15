@@ -59,10 +59,6 @@ extension UIColor {
         UIColor(hex: "#FF4545")
     }
 
-    public class var providedWhite: UIColor {
-        UIColor(hex: "#FF00A9")
-    }
-
     func createOnePixelImage() -> UIImage? {
         let size = CGSize(width: 1, height: 1)
         UIGraphicsBeginImageContext(size)
@@ -95,9 +91,5 @@ extension UIFont {
 final class Utilities {
     static let selectedPinkImage: UIImage = {
         UIColor.providedPink.createOnePixelImage() ?? UIImage()
-    }()
-
-    static let selectedDarkPinkImage: UIImage = {
-        UIColor.providedPinkDark.createOnePixelImage() ?? UIImage()
     }()
 }
