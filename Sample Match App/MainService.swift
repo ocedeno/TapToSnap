@@ -34,6 +34,7 @@ final class MainService {
                 return
             }
 
+            print(data)
             if let json = try? JSONSerialization.jsonObject(with: data) as? [MainViewModel.Tile] {
                 //TODO: Post notification
                 print(json)
@@ -49,7 +50,7 @@ final class MainService {
             return
         }
 
-        let task = session.uploadTask(withStreamedRequest: createURLRequest(with: url, method: "POST"), from: jsonData) { data, response, error in
+        let task = session.uploadTask(with: createURLRequest(with: url, method: "POST"), from: jsonData) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 return
             }
@@ -59,16 +60,17 @@ final class MainService {
                 return
             }
 
-            guard let data = data else {
+            guard let data = data, let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
                 //Handle flow if data is empty
                 return
             }
 
-            if let isValid = data as? Bool {
+            if let isValid = json["matched"] as? Bool {
                 //TODO: Post notification
                 print(isValid)
             }
-
         }
+
+        task.resume()
     }
 }
