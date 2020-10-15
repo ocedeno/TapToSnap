@@ -19,18 +19,20 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg" translatesAutoresizingMaskIntoConstraints="NO" id="cVd-Bf-3bP" userLabel="Background ImageView">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Axa-3q-unu" userLabel="Title Text ImageView">
-                                <rect key="frame" x="87" y="384" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Axa-3q-unu" userLabel="Title Text ImageView">
+                                <rect key="frame" x="10" y="175" width="394" height="180"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Axa-3q-unu" secondAttribute="trailing" constant="10" id="CHD-9n-NEg"/>
+                            <constraint firstItem="Axa-3q-unu" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="175" id="U21-b5-2Gl"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cVd-Bf-3bP" secondAttribute="trailing" id="VAV-gE-AkK"/>
                             <constraint firstAttribute="bottom" secondItem="cVd-Bf-3bP" secondAttribute="bottom" id="eUk-gz-zz3"/>
                             <constraint firstItem="cVd-Bf-3bP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="l2P-Va-b8W"/>
                             <constraint firstItem="cVd-Bf-3bP" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="seT-vf-SCX"/>
+                            <constraint firstItem="Axa-3q-unu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="xyJ-o2-llZ"/>
                         </constraints>
                     </view>
                 </viewController>
