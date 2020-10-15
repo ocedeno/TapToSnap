@@ -2,6 +2,8 @@ import Foundation
 import UIKit
 
 class MainViewController: UIViewController {
+    let viewModel = MainViewModel(initialState: .init(tiles: []))
+
     lazy var footerView: UIView = {
         let footerView = UIView()
         footerView.backgroundColor = .providedBgGrayDark
@@ -9,7 +11,7 @@ class MainViewController: UIViewController {
     }()
 
     lazy var countdownLabel: UILabel = {
-        createLabel(with: "", font: .providedKarlaLargeFont)
+        createLabel(with: viewModel.state.countdownText, font: .providedKarlaLargeFont)
     }()
 
     lazy var titleLabel: UILabel = {
@@ -42,21 +44,14 @@ class MainViewController: UIViewController {
         return stackView
     }()
 
-    let startTime: Date = Date()
-    let duration: TimeInterval = 1441 * 60
-    var runningTime: TimeInterval = 0
-    let formatter = DateComponentsFormatter()
-    var time: Date = Date()
-    let cal: Calendar = Calendar.current
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configure(formatter)
+        configure(viewModel.formatter)
         addSubviews()
-        beginTimer()
+        viewModel.beginTimer()
     }
-    
+
     private func configure(_ formatter: DateComponentsFormatter) {
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.zeroFormattingBehavior = .dropLeading
@@ -91,17 +86,6 @@ class MainViewController: UIViewController {
             footerView.widthAnchor.constraint(equalTo: view.widthAnchor),
             footerView.heightAnchor.constraint(equalToConstant: 100)
         ])
-    }
-
-    private func beginTimer() {
-        repeat {
-            time = cal.date(byAdding: .minute, value: 1, to: time)!
-            runningTime = time.timeIntervalSince(startTime)
-
-            if runningTime < duration {
-                countdownLabel.text = formatter.string(from: duration - runningTime)
-            }
-        } while runningTime > duration
     }
 
     private func createDefaultTile(with title: String) -> UIView {
