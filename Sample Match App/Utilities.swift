@@ -1,74 +1,76 @@
 import UIKit
 
 extension UIColor {
-    public convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
-
-        if hex.hasPrefix("#") {
-            let start = hex.index(hex.startIndex, offsetBy: 1)
-            let hexColor = String(hex[start...])
-
-            if hexColor.count == 8 {
-                let scanner = Scanner(string: hexColor)
-                var hexNumber: UInt64 = 0
-
-                if scanner.scanHexInt64(&hexNumber) {
-                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                    a = CGFloat(hexNumber & 0x000000ff) / 255
-
-                    self.init(red: r, green: g, blue: b, alpha: a)
-                    return
-                }
-            }
+    convenience init(hex: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        if (hexString.hasPrefix("#")) {
+            scanner.currentIndex = String.Index(utf16Offset: 1, in: hexString)
         }
-
-        return nil
+        var color: UInt64 = 0
+        scanner.scanHexInt64(&color)
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
 
     public class var providedPink: UIColor {
-        UIColor(hex: "#FF00A9") ?? .systemPink
+        UIColor(hex: "#FF00A9")
     }
 
     public class var providedPinkDark: UIColor {
-        UIColor(hex: "#AD1078") ?? .systemIndigo
+        UIColor(hex: "#AD1078")
     }
 
     public class var providedGradientTop: UIColor {
-        UIColor(hex: "#1395B7") ?? .systemBlue
+        UIColor(hex: "#1395B7")
     }
 
     public class var providedGradientBottom: UIColor {
-        UIColor(hex: "#541177") ?? .systemPurple
+        UIColor(hex: "#541177")
     }
 
     public class var providedBgGray: UIColor {
-        UIColor(hex: "#302236") ?? .systemGray
+        UIColor(hex: "#302236")
     }
 
     public class var providedBgGrayDark: UIColor {
-        UIColor(hex: "#271C2B") ?? .systemGray4
+        UIColor(hex: "#271C2B")
     }
 
     public class var providedTileGray: UIColor {
-        UIColor(hex: "#584D5D") ?? .systemGray
+        UIColor(hex: "#584D5D")
     }
 
     public class var providedTileGrayDark: UIColor {
-        UIColor(hex: "#473C4D") ?? .systemGray4
+        UIColor(hex: "#473C4D")
     }
 
     public class var providedGreen: UIColor {
-        UIColor(hex: "#8BF388") ?? .systemGreen
+        UIColor(hex: "#8BF388")
     }
 
     public class var providedRed: UIColor {
-        UIColor(hex: "#FF4545") ?? .systemRed
+        UIColor(hex: "#FF4545")
     }
 
     public class var providedWhite: UIColor {
-        UIColor(hex: "#FF00A9") ?? .white
+        UIColor(hex: "#FF00A9")
+    }
+
+    func createOnePixelImage() -> UIImage? {
+        let size = CGSize(width: 1, height: 1)
+        UIGraphicsBeginImageContext(size)
+        defer { UIGraphicsEndImageContext() }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        context.setFillColor(cgColor)
+        context.fill(CGRect(origin: .zero, size: size))
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
 
@@ -88,4 +90,14 @@ extension UIFont {
     public class var providedKarlaExtraSmallFont : UIFont {
         UIFont(name: "Karla-Regular", size: 14) ?? .systemFont(ofSize: 14)
     }
+}
+
+final class Utilities {
+    static let selectedPinkImage: UIImage = {
+        UIColor.providedPink.createOnePixelImage() ?? UIImage()
+    }()
+
+    static let selectedDarkPinkImage: UIImage = {
+        UIColor.providedPinkDark.createOnePixelImage() ?? UIImage()
+    }()
 }

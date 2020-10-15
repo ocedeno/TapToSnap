@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Initial View Controller-->
+        <!--Startup View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="InitialViewController" customModule="Sample_Match_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="StartupViewController" customModule="Sample_Match_App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -23,7 +23,7 @@
                                 <rect key="frame" x="10" y="175" width="394" height="180"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmL-bM-ma9">
-                                <rect key="frame" x="10" y="783" width="394" height="30"/>
+                                <rect key="frame" x="30" y="783" width="354" height="30"/>
                                 <state key="normal" title="Button"/>
                             </button>
                         </subviews>
@@ -33,15 +33,18 @@
                             <constraint firstItem="Cam-ru-uTo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5Yx-Xi-3Nk"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Cam-ru-uTo" secondAttribute="trailing" id="7HH-Hv-RSJ"/>
                             <constraint firstItem="4So-kC-cFp" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="175" id="DwK-5A-nxm"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lmL-bM-ma9" secondAttribute="trailing" constant="10" id="NUf-Ma-qcm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lmL-bM-ma9" secondAttribute="trailing" constant="30" id="NUf-Ma-qcm"/>
                             <constraint firstItem="Cam-ru-uTo" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Nxx-qJ-UEy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4So-kC-cFp" secondAttribute="trailing" constant="10" id="Ze8-0W-dzY"/>
-                            <constraint firstItem="lmL-bM-ma9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="cbd-GZ-b5S"/>
+                            <constraint firstItem="lmL-bM-ma9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="cbd-GZ-b5S"/>
                             <constraint firstAttribute="bottom" secondItem="lmL-bM-ma9" secondAttribute="bottom" constant="83" id="ghi-JD-iHS"/>
                             <constraint firstItem="4So-kC-cFp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="k6F-gG-y22"/>
                             <constraint firstAttribute="bottom" secondItem="Cam-ru-uTo" secondAttribute="bottom" id="ssi-dR-Ipe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="continueButton" destination="lmL-bM-ma9" id="WIy-SE-RDs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
