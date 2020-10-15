@@ -52,10 +52,18 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configure(formatter)
+        addSubviews()
+        beginTimer()
+    }
+    
+    private func configure(_ formatter: DateComponentsFormatter) {
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.zeroFormattingBehavior = .dropLeading
         formatter.unitsStyle = .positional
+    }
 
+    private func addSubviews() {
         footerView.addSubview(countdownLabel)
         view.addSubview(stackView)
         view.addSubview(footerView)
@@ -83,8 +91,6 @@ class MainViewController: UIViewController {
             footerView.widthAnchor.constraint(equalTo: view.widthAnchor),
             footerView.heightAnchor.constraint(equalToConstant: 100)
         ])
-
-        beginTimer()
     }
 
     private func beginTimer() {
