@@ -78,7 +78,7 @@ extension UIFont {
     }
 
     public class var providedKarlaMediumFont : UIFont {
-        UIFont(name: "Karla-Bold", size: 28) ?? .systemFont(ofSize: 28)
+        UIFont(name: "Karla-Regular", size: 28) ?? .systemFont(ofSize: 28)
     }
 
     public class var providedKarlaSmallFont : UIFont {
@@ -86,6 +86,6 @@ extension UIFont {
     }
 
     public class var providedKarlaExtraSmallFont : UIFont {
-        UIFont(name: "Karla-Bold", size: 14) ?? .systemFont(ofSize: 14)
+        UIFont(name: "Karla-Regular", size: 14) ?? .systemFont(ofSize: 14)
     }
 }
