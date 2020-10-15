@@ -23,7 +23,7 @@
 		062552092537BC5F004C08E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0625520B2537BC60004C08E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0625520E2537BC60004C08E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		062552102537BC60004C08E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		062552102537BC60004C08E5 /* Karla-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Karla-Bold.ttf"; path = "Resources/Karla-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +62,7 @@
 				062552082537BC5F004C08E5 /* Main.storyboard */,
 				0625520B2537BC60004C08E5 /* Assets.xcassets */,
 				0625520D2537BC60004C08E5 /* LaunchScreen.storyboard */,
-				062552102537BC60004C08E5 /* Info.plist */,
+				062552102537BC60004C08E5 /* Karla-Bold.ttf */,
 			);
 			path = "Sample Match App";
 			sourceTree = "<group>";
