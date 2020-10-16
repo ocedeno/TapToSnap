@@ -35,7 +35,7 @@ final class MainService {
             }
 
             print(data)
-            if let json = try? JSONSerialization.jsonObject(with: data) as? [MainViewModel.Tile] {
+            if let json = try? JSONDecoder().decode([MainViewModel.Tile].self, from: data) {
                 //TODO: Post notification
                 print(json)
             }
@@ -45,7 +45,7 @@ final class MainService {
     }
 
     func validate(_ tile: MainViewModel.Tile) {
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: tile),
+        guard let jsonData = try? JSONEncoder().encode(tile),
               let url = createURL() else {
             return
         }
