@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UINavigationControllerDelegate {
     let viewModel = MainViewModel(initialState: .init(tiles: Array(repeating: MainViewModel.Tile(), count: 4)))
 
     lazy var footerView: UIView = {
@@ -34,6 +34,8 @@ class MainViewController: UIViewController {
 
     @objc private func addSubviews() {
         let stackView = createMainStackView()
+        stackView.isUserInteractionEnabled = true
+        view.isUserInteractionEnabled = true
         view.subviews.forEach { $0.removeFromSuperview() }
         footerView.addSubview(countdownLabel)
         view.addSubview(stackView)
@@ -64,47 +66,91 @@ class MainViewController: UIViewController {
         ])
     }
 
-    private func createDefaultTile(with tile: MainViewModel.Tile) -> UIView {
+    private func createTile(for tile: MainViewModel.Tile) -> UIView {
         let view = UIView()
-        let imageView = UIImageView(image: UIImage(named: "tileDefault"))
-        let title = createLabel(with: tile.title, font: .providedKarlaSmallFont)
 
+        if let image = tile.image {
+            let imageView = UIImageView(image: image)
+            view.addSubview(imageView)
+            NSLayoutConstraint.activate([
+                imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                imageView.widthAnchor.constraint(equalToConstant: 160),
+                imageView.heightAnchor.constraint(equalToConstant: 263)
+            ])
+        }
 
-        //TODO: Add Tap Gesture and identifier of sorts if needed
-        view.addSubview(imageView)
-        view.addSubview(title)
+        let button = UIButton()
+        let imageName: String
 
-        title.translatesAutoresizingMaskIntoConstraints = false
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        switch tile.state {
+        case .verify:
+            imageName = "tileVerify"
+            button.isUserInteractionEnabled = false
+        case .default:
+            imageName = "tileDefault"
+            button.isUserInteractionEnabled = true
+        case .incorrect:
+            imageName = "tileIncorrect"
+            button.isUserInteractionEnabled = true
+        case.success:
+            imageName = "tileSuccess"
+            button.isUserInteractionEnabled = true
+        }
+
+        button.setImage(UIImage(named: imageName), for: .normal)
+        button.tag = tile.id
+
+        let titleView: UIView = createLabel(with: tile.title, font: .providedKarlaSmallFont)
+        view.addSubview(button)
+        view.addSubview(titleView)
+
+        titleView.translatesAutoresizingMaskIntoConstraints = false
+        button.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 160),
-            imageView.heightAnchor.constraint(equalToConstant: 263),
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            button.widthAnchor.constraint(equalToConstant: 160),
+            button.heightAnchor.constraint(equalToConstant: 263),
 
-            title.widthAnchor.constraint(equalToConstant: 160),
-            title.heightAnchor.constraint(equalToConstant: 54),
-            title.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            title.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            title.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            titleView.widthAnchor.constraint(equalToConstant: 160),
+            titleView.heightAnchor.constraint(equalToConstant: 54),
+            titleView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            titleView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
         return view
+    }
+
+    @objc private func showCamera(_ sender: AnyObject) {
+        guard let button = sender as? UIButton else {
+            return
+        }
+
+        viewModel.updateSelectedTile(with: button.tag, tileState: .verify)
+
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.allowsEditing = true
+        vc.delegate = self
+        present(vc, animated: true)
     }
 
     private func createMainStackView() -> UIStackView {
         let view = UIView()
         view.backgroundColor = .purple
         let verticalStack1 = createHorizontalStack(with: [
-            createDefaultTile(with: viewModel.state.tiles[0]),
-            createDefaultTile(with: viewModel.state.tiles[1])
+            createTile(for: viewModel.state.tiles[0]),
+            createTile(for: viewModel.state.tiles[1])
         ])
 
         let verticalStack2 = createHorizontalStack(with: [
-            createDefaultTile(with: viewModel.state.tiles[2]),
-            createDefaultTile(with: viewModel.state.tiles[3])
+            createTile(for: viewModel.state.tiles[2]),
+            createTile(for: viewModel.state.tiles[3])
         ])
 
         let stackView =  UIStackView(arrangedSubviews: [
@@ -139,5 +185,18 @@ class MainViewController: UIViewController {
         label.text = text
 
         return label
+    }
+}
+
+extension MainViewController: UIImagePickerControllerDelegate {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        picker.dismiss(animated: true)
+
+        guard let image = info[.editedImage] as? UIImage, let id = viewModel.state.currentlySelectedTile?.id else {
+            //TODO: Handle error of no image found
+            return
+        }
+
+        viewModel.updateSelectedTile(with: id, tileState: .verify, image: image)
     }
 }

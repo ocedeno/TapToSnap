@@ -10,6 +10,7 @@ final class MainViewModel {
         var runningTime: TimeInterval = 0
         var time: Date = Date()
         var countdownText: String = ""
+        var currentlySelectedTile: Tile? = nil
     }
 
     struct Tile: Codable {
@@ -78,5 +79,23 @@ final class MainViewModel {
                 state.countdownText = formatter.string(from: duration - state.runningTime) ?? ""
             }
         } while state.runningTime > duration
+    }
+
+    func getTile(with id: Int) -> Tile? {
+        state.tiles.first(where: { $0.id == id })
+    }
+
+    func updateSelectedTile(with id: Int, tileState: Tile.State, image: UIImage? = nil) {
+        guard let tileIndex = state.tiles.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+
+        var selectedTile = state.tiles.remove(at: tileIndex)
+        selectedTile.state = tileState
+        selectedTile.image = image
+        state.tiles.insert(selectedTile, at: tileIndex)
+        DispatchQueue.main.async { [self] in
+            NotificationCenter.default.post(name: notificationName, object: nil)
+        }
     }
 }
