@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class MainViewController: UIViewController {
-    let viewModel = MainViewModel(initialState: .init(tiles: []))
+    let viewModel = MainViewModel(initialState: .init(tiles: Array(repeating: MainViewModel.Tile(), count: 4)))
 
     lazy var footerView: UIView = {
         let footerView = UIView()
@@ -22,13 +22,13 @@ class MainViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .purple
         let verticalStack1 = createHorizontalStack(with: [
-            createDefaultTile(with: "Mug"),
-            createDefaultTile(with: "Dog")
+            createDefaultTile(with: viewModel.state.tiles[0]),
+            createDefaultTile(with: viewModel.state.tiles[1])
         ])
 
         let verticalStack2 = createHorizontalStack(with: [
-            createDefaultTile(with: "Tree"),
-            createDefaultTile(with: "Basketball")
+            createDefaultTile(with: viewModel.state.tiles[2]),
+            createDefaultTile(with: viewModel.state.tiles[3])
         ])
 
         let stackView =  UIStackView(arrangedSubviews: [
@@ -87,11 +87,13 @@ class MainViewController: UIViewController {
         ])
     }
 
-    private func createDefaultTile(with title: String) -> UIView {
+    private func createDefaultTile(with tile: MainViewModel.Tile) -> UIView {
         let view = UIView()
         let imageView = UIImageView(image: UIImage(named: "tileDefault"))
-        let title = createLabel(with: title, font: .providedKarlaSmallFont)
+        let title = createLabel(with: tile.title, font: .providedKarlaSmallFont)
 
+
+        //TODO: Add Tap Gesture and identifier of sorts if needed
         view.addSubview(imageView)
         view.addSubview(title)
 

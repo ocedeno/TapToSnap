@@ -12,14 +12,8 @@ final class MainViewModel {
         var countdownText: String = ""
     }
 
-    let cal: Calendar = Calendar.current
-    let startTime: Date = Date()
-    let duration: TimeInterval = 1441 * 60
-    let formatter = DateComponentsFormatter()
-    let service: MainService = MainService()
-
     struct Tile: Codable {
-        var id: Int
+        var id: Int = 0
         var state: State = .default
         var title: String = ""
         var image: UIImage? = nil
@@ -47,14 +41,28 @@ final class MainViewModel {
             try id = container.decode(Int.self, forKey: .id)
             try title = container.decode(String.self, forKey: .title)
         }
+
+        init() {
+            self.title = ""
+            self.state = .default
+            self.id = 0
+            self.image =  nil
+        }
     }
 
     var state: State
+    let cal: Calendar = Calendar.current
+    let startTime: Date = Date()
+    let duration: TimeInterval = 1441 * 60
+    let formatter = DateComponentsFormatter()
+    let service: MainService = MainService()
 
     init(initialState: State) {
         state =  initialState
         beginTimer()
-        service.fetchTileObjects()
+        service.fetchTileObjects { tiles in
+            self.state.tiles = tiles
+        }
     }
 
     func beginTimer() {

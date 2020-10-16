@@ -14,12 +14,12 @@ final class MainService {
         return request
     }
 
-    func fetchTileObjects() {
+    func fetchTileObjects(completion: @escaping ([MainViewModel.Tile]) -> () ) {
         guard let url = createURL() else {
             return
         }
 
-        let task = session.dataTask(with: createURLRequest(with: url, method: "GET")) { (data: Data?, response: URLResponse?, error: Error?) -> () in
+        session.dataTask(with: createURLRequest(with: url, method: "GET")) { (data: Data?, response: URLResponse?, error: Error?) -> () in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 return
             }
@@ -35,22 +35,19 @@ final class MainService {
             }
 
             print(data)
-            if let json = try? JSONDecoder().decode([MainViewModel.Tile].self, from: data) {
-                //TODO: Post notification
-                print(json)
+            if let defaultTiles = try? JSONDecoder().decode([MainViewModel.Tile].self, from: data) {
+                completion(defaultTiles)
             }
-        }
-
-        task.resume()
+        }.resume()
     }
 
-    func validate(_ tile: MainViewModel.Tile) {
+    func validate(_ tile: MainViewModel.Tile, completion: @escaping (Bool) -> ()) {
         guard let jsonData = try? JSONEncoder().encode(tile),
               let url = createURL() else {
             return
         }
 
-        let task = session.uploadTask(with: createURLRequest(with: url, method: "POST"), from: jsonData) { data, response, error in
+        session.uploadTask(with: createURLRequest(with: url, method: "POST"), from: jsonData) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 return
             }
@@ -66,11 +63,8 @@ final class MainService {
             }
 
             if let isValid = json["matched"] as? Bool {
-                //TODO: Post notification
-                print(isValid)
+                return completion(isValid)
             }
-        }
-
-        task.resume()
+        }.resume()
     }
 }
