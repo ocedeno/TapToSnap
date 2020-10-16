@@ -93,6 +93,7 @@ final class MainViewModel {
         var selectedTile = state.tiles.remove(at: tileIndex)
         selectedTile.state = tileState
         selectedTile.image = image
+        state.currentlySelectedTile = selectedTile
         state.tiles.insert(selectedTile, at: tileIndex)
         DispatchQueue.main.async { [self] in
             NotificationCenter.default.post(name: notificationName, object: nil)

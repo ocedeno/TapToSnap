@@ -2,10 +2,10 @@ import Foundation
 import UIKit
 
 class MainViewController: UIViewController, UINavigationControllerDelegate {
-    var tile1 = MainViewModel.Tile()
-    var tile2 = MainViewModel.Tile()
-    var tile3 = MainViewModel.Tile()
-    var tile4 = MainViewModel.Tile()
+    var tile1: MainViewModel.Tile = .init()
+    var tile2: MainViewModel.Tile = .init()
+    var tile3: MainViewModel.Tile = .init()
+    var tile4: MainViewModel.Tile = .init()
     let viewModel = MainViewModel(initialState: .init(tiles: Array(repeating: MainViewModel.Tile(), count: 4)))
 
     lazy var footerView: UIView = {
@@ -25,12 +25,15 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tile1.state = .default
-        tile2.state = .incorrect
+        tile1.id = 0
+        tile2.id = 1
+        tile3.id = 2
+        tile4.id = 3
+        tile2.state = .verify
         tile2.image = UIImage(named: "logo")
         tile3.state = .success
         tile3.image = UIImage(named: "logo")
-        tile4.state = .verify
+        tile4.state = .incorrect
         tile4.image = UIImage(named: "logo")
         viewModel.state.tiles = [tile1, tile2, tile3, tile4]
 
@@ -170,8 +173,6 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
     }
 
     private func createMainStackView() -> UIStackView {
-        let view = UIView()
-        view.backgroundColor = .purple
         let verticalStack1 = createHorizontalStack(with: [
             createTile(for: viewModel.state.tiles[0]),
             createTile(for: viewModel.state.tiles[1])
@@ -191,6 +192,7 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
         stackView.spacing = 15
+        stackView.translatesAutoresizingMaskIntoConstraints = false
 
         return stackView
     }
