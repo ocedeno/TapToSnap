@@ -2,6 +2,10 @@ import Foundation
 import UIKit
 
 class MainViewController: UIViewController, UINavigationControllerDelegate {
+    var tile1 = MainViewModel.Tile()
+    var tile2 = MainViewModel.Tile()
+    var tile3 = MainViewModel.Tile()
+    var tile4 = MainViewModel.Tile()
     let viewModel = MainViewModel(initialState: .init(tiles: Array(repeating: MainViewModel.Tile(), count: 4)))
 
     lazy var footerView: UIView = {
@@ -20,6 +24,15 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tile1.state = .default
+        tile2.state = .incorrect
+        tile2.image = UIImage(named: "logo")
+        tile3.state = .success
+        tile3.image = UIImage(named: "logo")
+        tile4.state = .verify
+        tile4.image = UIImage(named: "logo")
+        viewModel.state.tiles = [tile1, tile2, tile3, tile4]
 
         configure(viewModel.formatter)
         addSubviews()
@@ -69,15 +82,16 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
     private func createTile(for tile: MainViewModel.Tile) -> UIView {
         let view = UIView()
 
-        if let image = tile.image {
+        if let image = tile.image, tile.state != .default {
             let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFit
+            imageView.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(imageView)
             NSLayoutConstraint.activate([
                 imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                imageView.widthAnchor.constraint(equalToConstant: 160),
-                imageView.heightAnchor.constraint(equalToConstant: 263)
+                imageView.topAnchor.constraint(equalTo: view.topAnchor)
             ])
         }
 
@@ -100,6 +114,7 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
         }
 
         button.setImage(UIImage(named: imageName), for: .normal)
+        button.addTarget(self, action: #selector(showCamera), for: .touchUpInside)
         button.tag = tile.id
 
         let titleView: UIView = createLabel(with: tile.title, font: .providedKarlaSmallFont)
@@ -122,6 +137,20 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
             titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             titleView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+
+        if tile.state == .verify {
+            let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+            activityIndicator.startAnimating()
+            view.addSubview(activityIndicator)
+
+            NSLayoutConstraint.activate([
+                activityIndicator.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+                activityIndicator.centerXAnchor.constraint(equalTo: button.centerXAnchor),
+            ])
+        }
+
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         return view
     }
@@ -198,5 +227,6 @@ extension MainViewController: UIImagePickerControllerDelegate {
         }
 
         viewModel.updateSelectedTile(with: id, tileState: .verify, image: image)
+        viewModel.verifyMatch(with: image, for: id)
     }
 }

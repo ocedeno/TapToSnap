@@ -62,12 +62,12 @@ final class MainViewModel {
     init(initialState: State) {
         state =  initialState
         beginTimer()
-        service.fetchTileObjects { [self] tiles in
-            state.tiles = tiles
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: notificationName, object: nil)
-            }
-        }
+//        service.fetchTileObjects { [self] tiles in
+//            state.tiles = tiles
+//            DispatchQueue.main.async {
+//                NotificationCenter.default.post(name: notificationName, object: nil)
+//            }
+//        }
     }
 
     func beginTimer() {
@@ -96,6 +96,23 @@ final class MainViewModel {
         state.tiles.insert(selectedTile, at: tileIndex)
         DispatchQueue.main.async { [self] in
             NotificationCenter.default.post(name: notificationName, object: nil)
+        }
+    }
+
+    func verifyMatch(with image: UIImage, for id: Int) {
+        guard var tile = state.tiles.first(where: { $0.id == id }) else {
+            //TODO: Handle
+            return
+        }
+
+        tile.image = image
+
+        service.validate(tile) { isSuccess in
+            if isSuccess {
+                self.updateSelectedTile(with: id, tileState: .success)
+            } else {
+                self.updateSelectedTile(with: id, tileState: .incorrect)
+            }
         }
     }
 }
