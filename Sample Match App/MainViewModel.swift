@@ -56,12 +56,16 @@ final class MainViewModel {
     let duration: TimeInterval = 1441 * 60
     let formatter = DateComponentsFormatter()
     let service: MainService = MainService()
+    var notificationName = Notification.Name("updatedState")
 
     init(initialState: State) {
         state =  initialState
         beginTimer()
-        service.fetchTileObjects { tiles in
-            self.state.tiles = tiles
+        service.fetchTileObjects { [self] tiles in
+            state.tiles = tiles
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: notificationName, object: nil)
+            }
         }
     }
 

@@ -18,37 +18,12 @@ class MainViewController: UIViewController {
         createLabel(with: "Tap to snap", font: .providedKarlaMediumFont)
     }()
 
-    lazy var stackView: UIStackView = {
-        let view = UIView()
-        view.backgroundColor = .purple
-        let verticalStack1 = createHorizontalStack(with: [
-            createDefaultTile(with: viewModel.state.tiles[0]),
-            createDefaultTile(with: viewModel.state.tiles[1])
-        ])
-
-        let verticalStack2 = createHorizontalStack(with: [
-            createDefaultTile(with: viewModel.state.tiles[2]),
-            createDefaultTile(with: viewModel.state.tiles[3])
-        ])
-
-        let stackView =  UIStackView(arrangedSubviews: [
-            titleLabel,
-            verticalStack1,
-            verticalStack2
-        ])
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.axis = .vertical
-        stackView.spacing = 15
-
-        return stackView
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configure(viewModel.formatter)
         addSubviews()
+        NotificationCenter.default.addObserver(self, selector: #selector(addSubviews), name: viewModel.notificationName, object: nil)
     }
 
     private func configure(_ formatter: DateComponentsFormatter) {
@@ -57,7 +32,9 @@ class MainViewController: UIViewController {
         formatter.unitsStyle = .positional
     }
 
-    private func addSubviews() {
+    @objc private func addSubviews() {
+        let stackView = createMainStackView()
+        view.subviews.forEach { $0.removeFromSuperview() }
         footerView.addSubview(countdownLabel)
         view.addSubview(stackView)
         view.addSubview(footerView)
@@ -115,6 +92,32 @@ class MainViewController: UIViewController {
         ])
 
         return view
+    }
+
+    private func createMainStackView() -> UIStackView {
+        let view = UIView()
+        view.backgroundColor = .purple
+        let verticalStack1 = createHorizontalStack(with: [
+            createDefaultTile(with: viewModel.state.tiles[0]),
+            createDefaultTile(with: viewModel.state.tiles[1])
+        ])
+
+        let verticalStack2 = createHorizontalStack(with: [
+            createDefaultTile(with: viewModel.state.tiles[2]),
+            createDefaultTile(with: viewModel.state.tiles[3])
+        ])
+
+        let stackView =  UIStackView(arrangedSubviews: [
+            titleLabel,
+            verticalStack1,
+            verticalStack2
+        ])
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.axis = .vertical
+        stackView.spacing = 15
+
+        return stackView
     }
 
     private func createHorizontalStack(with views: [UIView]) -> UIStackView {
