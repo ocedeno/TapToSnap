@@ -2,10 +2,6 @@ import Foundation
 import UIKit
 
 class MainViewController: UIViewController, UINavigationControllerDelegate {
-    var tile1: MainViewModel.Tile = .init()
-    var tile2: MainViewModel.Tile = .init()
-    var tile3: MainViewModel.Tile = .init()
-    var tile4: MainViewModel.Tile = .init()
     let viewModel = MainViewModel(initialState: .init(tiles: Array(repeating: MainViewModel.Tile(), count: 4)))
 
     lazy var footerView: UIView = {
@@ -25,21 +21,10 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tile1.id = 0
-        tile2.id = 1
-        tile3.id = 2
-        tile4.id = 3
-        tile2.state = .verify
-        tile2.image = UIImage(named: "logo")
-        tile3.state = .success
-        tile3.image = UIImage(named: "logo")
-        tile4.state = .incorrect
-        tile4.image = UIImage(named: "logo")
-        viewModel.state.tiles = [tile1, tile2, tile3, tile4]
-
         configure(viewModel.formatter)
         addSubviews()
         NotificationCenter.default.addObserver(self, selector: #selector(addSubviews), name: viewModel.notificationName, object: nil)
+        view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configure(_ formatter: DateComponentsFormatter) {
@@ -59,14 +44,13 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
         countdownLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         footerView.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
             stackView.bottomAnchor.constraint(equalTo: footerView.topAnchor, constant: -45),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            stackView.heightAnchor.constraint(equalToConstant: view.frame.height - footerView.frame.height),
-
             countdownLabel.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 0),
             countdownLabel.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16),
             countdownLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 8),
@@ -78,7 +62,10 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
             footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             footerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            footerView.heightAnchor.constraint(equalToConstant: 100)
+            footerView.heightAnchor.constraint(equalToConstant: 100),
+
+            view.heightAnchor.constraint(equalToConstant: view.frame.height),
+            stackView.heightAnchor.constraint(equalToConstant: view.frame.height - footerView.frame.height),
         ])
     }
 
@@ -113,7 +100,7 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
             button.isUserInteractionEnabled = true
         case.success:
             imageName = "tileSuccess"
-            button.isUserInteractionEnabled = true
+            button.isUserInteractionEnabled = false
         }
 
         button.setImage(UIImage(named: imageName), for: .normal)
@@ -138,7 +125,9 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
             titleView.heightAnchor.constraint(equalToConstant: 54),
             titleView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            titleView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            titleView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            view.heightAnchor.constraint(equalToConstant: 263)
         ])
 
         if tile.state == .verify {

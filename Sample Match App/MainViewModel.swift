@@ -54,7 +54,7 @@ final class MainViewModel {
     var state: State
     let cal: Calendar = Calendar.current
     let startTime: Date = Date()
-    let duration: TimeInterval = 1441 * 60
+    let duration: TimeInterval = 1440 * 60
     let formatter = DateComponentsFormatter()
     let service: MainService = MainService()
     var notificationName = Notification.Name("updatedState")
@@ -62,12 +62,12 @@ final class MainViewModel {
     init(initialState: State) {
         state =  initialState
         beginTimer()
-//        service.fetchTileObjects { [self] tiles in
-//            state.tiles = tiles
-//            DispatchQueue.main.async {
-//                NotificationCenter.default.post(name: notificationName, object: nil)
-//            }
-//        }
+        service.fetchTileObjects { [self] tiles in
+            state.tiles = tiles
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: notificationName, object: nil)
+            }
+        }
     }
 
     func beginTimer() {
