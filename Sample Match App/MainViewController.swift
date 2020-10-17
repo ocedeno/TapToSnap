@@ -49,8 +49,8 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
             stackView.bottomAnchor.constraint(equalTo: footerView.topAnchor, constant: -45),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             countdownLabel.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 0),
             countdownLabel.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -16),
             countdownLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 8),
@@ -156,7 +156,6 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
 
         let vc = UIImagePickerController()
         vc.sourceType = .camera
-        vc.allowsEditing = true
         vc.delegate = self
         present(vc, animated: true)
     }
@@ -212,7 +211,7 @@ extension MainViewController: UIImagePickerControllerDelegate {
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true)
 
-        guard let image = info[.editedImage] as? UIImage, let id = viewModel.state.currentlySelectedTile?.id else {
+        guard let image = info[.originalImage] as? UIImage, let id = viewModel.state.currentlySelectedTile?.id else {
             //TODO: Handle error of no image found
             return
         }
