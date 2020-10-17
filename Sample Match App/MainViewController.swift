@@ -210,13 +210,26 @@ class MainViewController: UIViewController, UINavigationControllerDelegate {
 extension MainViewController: UIImagePickerControllerDelegate {
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true)
-
-        guard let image = info[.originalImage] as? UIImage, let id = viewModel.state.currentlySelectedTile?.id else {
-            //TODO: Handle error of no image found
-            return
+        guard let id = viewModel.state.currentlySelectedTile?.id else {
+            preconditionFailure("Unable to locate referenced Tile. Tile must be available to reference it.")
         }
 
-        viewModel.updateSelectedTile(with: id, tileState: .verify, image: image)
-        viewModel.verifyMatch(with: image, for: id)
+        if let image = info[.originalImage] as? UIImage {
+            viewModel.updateSelectedTile(with: id, tileState: .verify, image: image)
+            viewModel.verifyMatch(with: image, for: id)
+        } else {
+            viewModel.updateSelectedTile(with: id, tileState: .default)
+        }
+    }
+
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+        guard let tile = viewModel.state.currentlySelectedTile else {
+            preconditionFailure("Unable to locate referenced Tile. Tile must be available to reference it.")
+        }
+
+        viewModel.updateSelectedTile(
+                with: tile.id,
+                tileState: (tile.state == .verify) && (tile.image != nil) ? .incorrect : .default)
     }
 }
